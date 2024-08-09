@@ -30,5 +30,22 @@ interface Handlers {
 const server: http.Server = http.createServer(
 	(req: http.IncomingMessage, res: http.ServerResponse) => {
 		const parsedUrl: url.UrlWithParsedQuery = url.parse(req.url || "", true);
+		const path: string = parsedUrl.pathname || "";
+		const trimmedPath: string = path.replace(/^\/+|\/+$/g, "");
+
+		const method: string = req.method?.toLowerCase() || "get";
+
+		const queryStringObject: NodeJS.Dict<string | string[]> = parsedUrl.query;
+
+		const headers: http.IncomingHttpHeaders = req.headers;
+
+		let body: Buffer[] = [];
+		req
+			.on("data", (chunk: Buffer) => {
+				body.push(chunk);
+			})
+			.on("end", () => {
+				const payload: string = Buffer.concat(body).toString();
+			});
 	}
 );
