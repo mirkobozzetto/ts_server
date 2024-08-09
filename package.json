@@ -1,0 +1,19 @@
+{
+	"name": "ts_server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/server.js",
+	"scripts": {
+		"build": "tsc",
+		"watch": "tsc-watch --onSuccess \"node dist/server.js\"",
+		"start": "npm run build && npm run watch"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.11.24",
+		"tsc-watch": "^6.0.4",
+		"typescript": "^5.3.3"
+	}
+}
