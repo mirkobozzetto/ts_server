@@ -11,7 +11,7 @@ const dataHandlers: DataHandlers = {
 		data: RequestData,
 		callback: (statusCode: number, payload: object) => void
 	) => {
-		console.log("Données reçues:", data.payload);
+		console.log("Data received:", data.payload);
 		callback(201, { message: "Data received successfully" });
 	},
 };

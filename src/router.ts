@@ -1,7 +1,14 @@
 import { handlers } from "./handlers";
-import { Handler } from "./types";
+import { authMiddleware, loggingMiddleware } from "./middleware";
+import { RouteConfig } from "./types";
 
-export const router: { [key: string]: Handler } = {
-	"": handlers.home,
-	"api/data": handlers.data,
+export const router: { [key: string]: RouteConfig } = {
+	"": {
+		handler: handlers.home,
+		middlewares: [loggingMiddleware],
+	},
+	"api/data": {
+		handler: handlers.data,
+		middlewares: [loggingMiddleware, authMiddleware],
+	},
 };

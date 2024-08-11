@@ -13,6 +13,16 @@ export type Handler = (
 	callback: (statusCode: number, payload: object) => void
 ) => void;
 
+export type Middleware = (
+	data: RequestData,
+	next: (error?: Error) => void
+) => void;
+
+export interface RouteConfig {
+	handler: Handler;
+	middlewares?: Middleware[];
+}
+
 export interface Handlers {
 	[key: string]: Handler;
 	notFound: Handler;

@@ -6,7 +6,7 @@ const dataHandlers = {
         callback(200, { message: "There are some data" });
     },
     post: (data, callback) => {
-        console.log("Données reçues:", data.payload);
+        console.log("Data received:", data.payload);
         callback(201, { message: "Data received successfully" });
     },
 };

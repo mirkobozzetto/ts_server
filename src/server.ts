@@ -1,27 +1,35 @@
 import http from "http";
 import { port } from "./config";
 import { handlers } from "./handlers";
+import { applyMiddleware } from "./middleware";
 import { router } from "./router";
-import { Handler } from "./types";
+import { RequestData, RouteConfig } from "./types";
 import { parseRequest } from "./utils/requestParser";
 
 const server: http.Server = http.createServer(
 	(req: http.IncomingMessage, res: http.ServerResponse) => {
-		parseRequest(req, (data) => {
-			const chosenHandler: Handler =
-				typeof router[data.trimmedPath] !== "undefined"
-					? router[data.trimmedPath]
-					: handlers.notFound;
+		parseRequest(req, (data: RequestData) => {
+			const routeConfig: RouteConfig = router[data.trimmedPath] || {
+				handler: handlers.notFound,
+			};
+			const { handler, middlewares = [] } = routeConfig;
 
-			chosenHandler(data, (statusCode: number, payload: object) => {
-				const payloadString: string = JSON.stringify(payload);
+			applyMiddleware(middlewares, data)
+				.then(() => {
+					handler(data, (statusCode: number, payload: object) => {
+						const payloadString: string = JSON.stringify(payload);
 
-				res.setHeader("Content-Type", "application/json");
-				res.writeHead(statusCode);
-				res.end(payloadString);
+						res.setHeader("Content-Type", "application/json");
+						res.writeHead(statusCode);
+						res.end(payloadString);
 
-				console.log(`Response: ${statusCode} ${payloadString}`);
-			});
+						console.log(`Response: ${statusCode} ${payloadString}`);
+					});
+				})
+				.catch((error: Error) => {
+					res.writeHead(401);
+					res.end(JSON.stringify({ error: error.message }));
+				});
 		});
 	}
 );
