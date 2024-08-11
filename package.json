@@ -2,10 +2,10 @@
 	"name": "ts_server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "dist/server.js",
+	"main": "dist/src/server.js",
 	"scripts": {
 		"build": "tsc",
-		"watch": "tsc-watch --onSuccess \"node dist/server.js\"",
+		"watch": "tsc-watch --onSuccess \"node dist/src/server.js\"",
 		"start": "npm run build && npm run watch"
 	},
 	"keywords": [],
