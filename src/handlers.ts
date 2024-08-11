@@ -1,3 +1,4 @@
+import { addPhrase, createTopic, getTopicWithPhrases } from "./dbOperations";
 import { DataHandlers, Handlers, RequestData } from "./types";
 
 const dataHandlers: DataHandlers = {
@@ -42,5 +43,51 @@ export const handlers: Handlers = {
 		callback: (statusCode: number, payload: object) => void
 	) => {
 		callback(404, {});
+	},
+
+	createTopic: async (
+		data: RequestData,
+		callback: (statusCode: number, payload: object) => void
+	) => {
+		try {
+			const { name } = JSON.parse(data.payload);
+			const topic = await createTopic(name);
+			callback(201, { message: "Topic created successfully", topic });
+		} catch (error) {
+			callback(500, { error: "Failed to create topic" });
+		}
+	},
+
+	addPhrase: async (
+		data: RequestData,
+		callback: (statusCode: number, payload: object) => void
+	) => {
+		try {
+			const { topicId, phrase } = JSON.parse(data.payload);
+			const newPhrase = await addPhrase(topicId, phrase);
+			callback(201, {
+				message: "Phrase added successfully",
+				phrase: newPhrase,
+			});
+		} catch (error) {
+			callback(500, { error: "Failed to add phrase" });
+		}
+	},
+
+	getTopic: async (
+		data: RequestData,
+		callback: (statusCode: number, payload: object) => void
+	) => {
+		try {
+			const topicId = parseInt(data.queryStringObject.id as string);
+			const topic = await getTopicWithPhrases(topicId);
+			if (topic) {
+				callback(200, topic);
+			} else {
+				callback(404, { error: "Topic not found" });
+			}
+		} catch (error) {
+			callback(500, { error: "Failed to get topic" });
+		}
 	},
 };
