@@ -3,6 +3,9 @@ import url from "url";
 
 const port: number = 3000;
 
+/**
+ * Data structure for the request data
+ */
 interface RequestData {
 	trimmedPath: string;
 	queryStringObject: NodeJS.Dict<string | string[]>;
@@ -16,6 +19,9 @@ type Handler = (
 	callback: (statusCode: number, payload: object) => void
 ) => void;
 
+/**
+ * Data structure for the handlers
+ */
 interface Handlers {
 	[key: string]: Handler;
 	notFound: Handler;
