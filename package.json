@@ -13,7 +13,11 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@types/node": "^20.11.24",
+		"@types/pg": "^8.11.6",
 		"tsc-watch": "^6.0.4",
 		"typescript": "^5.3.3"
+	},
+	"dependencies": {
+		"pg": "^8.12.0"
 	}
 }

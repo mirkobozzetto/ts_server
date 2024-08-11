@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:16
+    container_name: ts_server_db
+    restart: always
+    environment:
+      POSTGRES_USER: mirkobozzetto
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: ts_server
+    ports:
+      - "5432:5432"
+    volumes:
+      - ts_server_data:/var/lib/postgresql/data
+
+volumes:
+  ts_server_data:
