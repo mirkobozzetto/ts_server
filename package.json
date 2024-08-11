@@ -6,7 +6,8 @@
 	"scripts": {
 		"build": "tsc",
 		"watch": "tsc-watch --onSuccess \"node dist/src/server.js\"",
-		"start": "npm run build && npm run watch"
+		"start": "npm run build && npm run watch",
+		"migrate": "ts-node src/runMigrations.ts"
 	},
 	"keywords": [],
 	"author": "",
