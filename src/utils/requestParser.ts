@@ -2,6 +2,13 @@ import http from "http";
 import url from "url";
 import { RequestData } from "../types";
 
+/**
+ * @param req
+ * @param callback
+ * @returns
+ *
+ * Parses the request and calls the callback with the parsed data.
+ */
 export const parseRequest = (
 	req: http.IncomingMessage,
 	callback: (data: RequestData) => void

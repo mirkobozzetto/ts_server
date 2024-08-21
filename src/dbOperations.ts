@@ -1,25 +1,42 @@
-import pool from "./db";
+import { db } from "./db";
+import { topics, phrases } from "./db/schema";
+import { eq } from "drizzle-orm";
 
 export const createTopic = async (name: string) => {
-	const result = await pool.query(
-		"INSERT INTO topics(name) VALUES($1) RETURNING *",
-		[name]
-	);
-	return result.rows[0];
+	const [result] = await db.insert(topics).values({ name }).returning();
+	return result;
 };
 
-export const addPhrase = async (topicId: number, phrase: string) => {
-	const result = await pool.query(
-		"INSERT INTO phrases(topic_id, content) VALUES($1, $2) RETURNING *",
-		[topicId, phrase]
-	);
-	return result.rows[0];
+export const addPhrase = async (topicId: number, content: string) => {
+	const [result] = await db
+		.insert(phrases)
+		.values({ topicId, content })
+		.returning();
+	return result;
 };
 
 export const getTopicWithPhrases = async (topicId: number) => {
-	const result = await pool.query(
-		"SELECT t.id, t.name, json_agg(p.content) as phrases FROM topics t LEFT JOIN phrases p ON t.id = p.topic_id WHERE t.id = $1 GROUP BY t.id",
-		[topicId]
-	);
-	return result.rows[0];
+	const result = await db
+		.select({
+			id: topics.id,
+			name: topics.name,
+			phrases: phrases.content,
+		})
+		.from(topics)
+		.leftJoin(phrases, eq(topics.id, phrases.topicId))
+		.where(eq(topics.id, topicId))
+		.execute();
+
+	// Group phrases
+	const groupedResult = result.reduce((acc, row) => {
+		if (!acc.id) {
+			acc.id = row.id;
+			acc.name = row.name;
+			acc.phrases = [];
+		}
+		if (row.phrases) acc.phrases.push(row.phrases);
+		return acc;
+	}, {} as { id: number; name: string; phrases: string[] });
+
+	return groupedResult;
 };

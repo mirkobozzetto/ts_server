@@ -29,8 +29,3 @@ export interface Handlers {
 	home: Handler;
 	data: Handler;
 }
-
-export interface DataHandlers {
-	get: Handler;
-	post: Handler;
-}

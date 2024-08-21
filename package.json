@@ -7,7 +7,8 @@
 		"build": "tsc",
 		"watch": "tsc-watch --onSuccess \"node dist/src/server.js\"",
 		"start": "npm run build && npm run watch",
-		"migrate": "ts-node src/runMigrations.ts"
+		"generate": "drizzle-kit generate:pg",
+		"migrate": "ts-node src/db/migrate.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -15,10 +16,12 @@
 	"devDependencies": {
 		"@types/node": "^20.11.24",
 		"@types/pg": "^8.11.6",
+		"drizzle-kit": "^0.24.0",
 		"tsc-watch": "^6.0.4",
 		"typescript": "^5.3.3"
 	},
 	"dependencies": {
+		"drizzle-orm": "^0.33.0",
 		"pg": "^8.12.0"
 	}
 }

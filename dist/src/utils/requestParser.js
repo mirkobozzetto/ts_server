@@ -5,6 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseRequest = void 0;
 const url_1 = __importDefault(require("url"));
+/**
+ * @param req
+ * @param callback
+ * @returns
+ *
+ * Parses the request and calls the callback with the parsed data.
+ */
 const parseRequest = (req, callback) => {
     var _a;
     const parsedUrl = url_1.default.parse(req.url || "", true);

@@ -1,5 +1,10 @@
 import { addPhrase, createTopic, getTopicWithPhrases } from "./dbOperations";
-import { DataHandlers, Handlers, RequestData } from "./types";
+import { Handler, Handlers, RequestData } from "./types";
+
+export interface DataHandlers {
+	get: Handler;
+	post: Handler;
+}
 
 const dataHandlers: DataHandlers = {
 	get: (
